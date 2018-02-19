@@ -1,0 +1,15 @@
+quoteserve.java -- The servlet
+QuoteList.java -- A list of quotes, representing what's read from the XML file
+Quote.java -- A simple Quote bean: two entries, author and quote-text
+QuoteSaxHandler.java -- Callback methods for the parser, populates QuoteList
+QuoteSaxParser.java -- Parses the XML file
+quotes.js -- JS used by the HTML created in quoteserve
+quotes.xml -- Data file, read by QuoteSaxParser
+              Goes in (on home.cs.gmu.edu): /webapps/offutt/WEB-INF/data
+              Read from (https://cs.gmu.edu:8443/offutt/servlet/): /var/www/CS/webapps/offutt/WEB-INF/data/
+
+NOTE: SOMETIMES I CHANGE THE DEPLOYED VERSION OF quotes.xml,
+      SO THIS VERSION IS OFTEN OUT OF DATE.
+
+NOTE II: quotes.xml is read into memory and stays resident as long as the servlet instance stays in memory
+         (30 minutes after last call).

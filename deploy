@@ -1,0 +1,7 @@
+# Deploying the Application
+
+echo Compiling
+cd ..
+javac quotes/*.java
+echo running Quotes Application
+java quotes/quoteserve
