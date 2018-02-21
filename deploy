@@ -1,7 +1,12 @@
 # Deploying the Application
+DIRECTORY="Quotes-master"
 
 echo Compiling
-cd ..
+cd ../
+if [ -d "$DIRECTORY" ]; then 
+    echo "File Exists";
+    mv Quotes-master quotes; 
+fi 
 javac quotes/*.java
 echo running Quotes Application
-java quotes/quoteserve
+java quotes/Driver
