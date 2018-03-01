@@ -1,4 +1,4 @@
-# Deploying the Application
+#!/bin/bash
 DIRECTORY="Quotes-master"
 
 echo Compiling
