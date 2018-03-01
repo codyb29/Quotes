@@ -91,8 +91,10 @@ public class QuoteServer {
     }
 
     public void printHistory () {
+        int count = 1;
         for (int i = recentSearches.size () - 1; i > -1 ; i--) {
-            System.out.println ((5 - i) + ". " + recentSearches.elementAt(i));
+            System.out.println (count + ". " + recentSearches.elementAt(i));
+            count++;
         }
 
         System.out.print("\n");
