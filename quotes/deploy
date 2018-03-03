@@ -1,0 +1,12 @@
+#!/bin/bash
+DIRECTORY="Quotes-master"
+
+echo Compiling
+cd ../
+if [ -d "$DIRECTORY" ]; then 
+    echo "File Exists";
+    mv Quotes-master quotes; 
+fi 
+javac quotes/*.java
+echo running Quotes Application
+java quotes/Driver

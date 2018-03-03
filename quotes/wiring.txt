@@ -1,0 +1,8 @@
+QuoteServer.java -- The servlet
+QuoteList.java -- A list of quotes, representing what's read from the XML file
+Quote.java -- A simple Quote bean: two entries, author and quote-text
+QuoteSaxHandler.java -- Callback methods for the parser, populates QuoteList
+QuoteSaxParser.java -- Parses the XML file
+quotes.xml -- Data file, read by QuoteSaxParser
+Driver.java -- Provides the UI within a terminal session.
+
