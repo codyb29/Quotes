@@ -1,117 +1,162 @@
-package quotes;
+package assignment11;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
 class UnitTests {
-	@Test
-	void testReference() {
-		String keywords = "JD";
-		Quote quote = new Quote("John Doe", "Hello World!");
-		quote.setKeywords(keywords);
-		assertEquals(keywords, quote.getKeywords().get(0));
-	}
-	
-	@Test
-	void testKeywordLength() {
-		String name = "John Doe";
-		String text = "Hello World";
-		int max = 2 * (name.split(" ").length + text.split(" ").length);
-		String keywords = "1,2,3,4,5,6,7,8,9";
 
-		Quote quote = new Quote(name, text);
-		quote.setKeywords(keywords);
+	// predicate: (month2 == month1) row 1
+	@Test
+	void testp1r1() {
+		int month1 = 6; // should be equivalent to month2
+		int month2 = 6; // should be equivalent to month1
+		int day1 = 4;
+		int day2 = 21;
+		int year = 2008;
+		int ans = Cal.cal(month1, day1, month2, day2, year);
+		// Should execute statement within if statement if predicate evaluates to true
+		assertEquals(day2 - day1, ans);
+	}
 
-		assertEquals(max, quote.getKeywords().size());
-	}
-	
+	// predicate: (month2 == month1) row 2
 	@Test
-	void testWordiness() {
-		String invalidWord = "FIND ME,goodWord";
-		Quote quote = new Quote("John Doe", "Hello World!");
-		quote.setKeywords(invalidWord);
-		assertFalse(quote.getKeywords().get(0).contains(" "));
-		
-				
+	void testp1r2() {
+		int month1 = 3; // should differ from month2
+		int month2 = 5; // should differ from month1
+		int day1 = 4;
+		int day2 = 21;
+		int year = 2008;
+		int ans = Cal.cal(month1, day1, month2, day2, year);
+		// Should not execute statement within if statement if predicate evaluates to
+		// false
+		assertNotEquals(day2 - day1, ans);
 	}
+
+	// predicate: ((m4 !=0) || ((m100 == 0) && (m400 != 0))) row 3
 	@Test
-	void testMultipleWordiness() {
-		String invalidWord = "FIND ME, I'M AN ERROR, I'M THE THIRD ONE!!,goodWord";
-		Quote quote = new Quote("John Doe", "Hello World!");
-		
-		quote.setKeywords(invalidWord);
-		for (int i = 0; i < quote.getKeywords().size(); i++ ) {
-			assertFalse(quote.getKeywords().get(i).contains(" "));
-		}
+	void testp2r3() {
+		// should differ from month2, Make it February and check to see if February was
+		// assigned correctly. Since predicate should evaluate to true, cal should
+		// return 28.
+		int month1 = 2;
+		int month2 = 3; // should differ from month1, set it to March for simplicity.
+		int day1 = 1;
+		int day2 = 1;
+		int year = 7; // critical value
+		int ans = Cal.cal(month1, day1, month2, day2, year);
+		assertEquals(ans, 28);
 	}
-	
+
+	// predicate: ((m4 !=0) || ((m100 == 0) && (m400 != 0))) row 7
 	@Test
-	void testKeywordSearchSize() {
-		QuoteServer server = new QuoteServer ("quotes/SearchHistory"); 
-        try {
-            server.getSearchHistory ().createNewFile ();
-        } catch (IOException error) { }
-        server.fillSearchHistory ("quotes/SearchHistory");
-        server.setDatabase ("quotes/quotes.xml");
-        
-        QuoteList temp = server.getDatabase().keywordSearch("JD");
-        assertTrue(temp.getSize() == 1);
+	void testp2r7() {
+		// should differ from month2, Make it February and check to see if February was
+		// assigned correctly. Since predicate should evaluate to false, cal should
+		// return 29.
+		int month1 = 2;
+		int month2 = 3; // should differ from month1, set it to March for simplicity.
+		int day1 = 1;
+		int day2 = 1;
+		int year = 4; // critical value
+		int ans = Cal.cal(month1, day1, month2, day2, year);
+		assertEquals(ans, 29);
 	}
-	
+
+	// predicate: ((m4 !=0) || ((m100 == 0) && (m400 != 0))) row 5
 	@Test
-	void testKeywordSearchQuote() {
-		QuoteServer server = new QuoteServer ("quotes/SearchHistory"); 
-        try {
-            server.getSearchHistory ().createNewFile ();
-        } catch (IOException error) { }
-        server.fillSearchHistory ("quotes/SearchHistory");
-        server.setDatabase ("quotes/quotes.xml");
-        
-        QuoteList temp = server.getDatabase().keywordSearch("JD");
-        assertTrue(temp.getQuote(0).getKeywords().contains("JD"));
+	void testp2r5() {
+		int month1 = 2;
+		int day1 = 1;
+		int month2 = 3;
+		int day2 = 1;
+		int year = 100;
+
+		// fTtt
+
+		// a = m4 != 0
+		assertFalse(year % 4 != 0);
+		// b = m100 == 0
+		assertTrue(year % 100 == 0);
+		// c = m400 != 0
+		assertTrue(year % 400 != 0);
+		// p = m4 != 0 || (m100 == 0 && m400 !=0)
+		assertTrue(year % 4 != 0 || (year % 100 == 0 && year % 400 != 0));
+
+		/*
+		 * here since the months are different, we expect to go to the else part the
+		 * year is not a leap year since it is divisible by 100 but not 400!
+		 */
+
+		int ans = Cal.cal(month1, day1, month2, day2, year);
+		assertEquals(ans, 28);
 	}
-	
+
+	// predicate: ((m4 !=0) || ((m100 == 0) && (m400 != 0))) row 6
 	@Test
-	void testKeywordSearchSizes() {
-		QuoteServer server = new QuoteServer ("quotes/SearchHistory"); 
-        try {
-            server.getSearchHistory ().createNewFile ();
-        } catch (IOException error) { }
-        server.fillSearchHistory ("quotes/SearchHistory");
-        server.setDatabase ("quotes/quotes.xml");
-        
-        QuoteList temp = server.getDatabase().keywordSearch("comedian");
-        assertTrue(temp.getSize() == 2);
+	void testp2r6() {
+		int month1 = 2;
+		int day1 = 1;
+		int month2 = 3;
+		int day2 = 1;
+		int year = 400;
+
+		// ftFf
+
+		// a = m4 != 0
+		assertFalse(year % 4 != 0);
+		// b = m100 == 0
+		assertTrue(year % 100 == 0);
+		// c = m400 != 0
+		assertFalse(year % 400 != 0);
+		// p = m4 != 0 || (m100 == 0 && m400 !=0)
+		assertFalse(year % 4 != 0 || (year % 100 == 0 && year % 400 != 0));
+
+		/*
+		 * here since the months are different, we expect to go to the else part the
+		 * year is leap year since it is divisible by 400
+		 */
+
+		int ans = Cal.cal(month1, day1, month2, day2, year);
+		assertEquals(ans, 29);
 	}
-	
+
+	// predicate: (i <= month2-1) row 1.
 	@Test
-	void testKeywordSearchQuotes() {
-		QuoteServer server = new QuoteServer ("quotes/SearchHistory"); 
-        try {
-            server.getSearchHistory ().createNewFile ();
-        } catch (IOException error) { }
-        server.fillSearchHistory ("quotes/SearchHistory");
-        server.setDatabase ("quotes/quotes.xml");
-        
-        QuoteList temp = server.getDatabase().keywordSearch("comedian");
-        for (int i = 0; i < temp.getSize(); i++) {
-        		assertTrue(temp.getQuote(i).getKeywords().contains("comedian"));
-        }
+	void testp3r1() {
+		int day1 = 1;
+		int day2 = 1;
+		int month1 = 1;
+		int month2 = 3;
+		int year = 400;
+		int i = month1 + 1;
+
+		assertTrue(i <= month2 - 1);
+
+		int ans = Cal.cal(month1, day1, month2, day2, year);
+		// we should go in the else part of the Cal method which has our predicate
+		// ans should calculate the days between month2 and month1 by adding
+		// the values in daysIn[] and since we are in a leap year, february = 29.
+		assertEquals(ans, 60);
+
 	}
-	
+
+	// predicate: (i <= month2-1) row 2.
 	@Test
-	void testDuplicatesSize() {
-		String name = "John Doe";
-		String text = "Hello World";
-		String keywords = "1,2,3,4,5,6,1";
-		int noDuplicates = 6;
-		Quote quote = new Quote(name, text);
-		quote.setKeywords(keywords);
-		assertEquals(noDuplicates, quote.getKeywords().size());
+	void testp3r2() {
+		int day1 = 5;
+		int day2 = 15;
+		int month1 = 5;
+		int month2 = 5;
+		int year = 400;
+		int i = month1 + 1;
+
+		assertFalse(i <= month2 - 1);
+
+		int ans = Cal.cal(month1, day1, month2, day2, year);
+		// we should go in the if part of the Cal method.
+		// since the months are equal here, the predicate is never reached
+		// and we are just subtracting the days.
+		assertEquals(ans, 10);
 	}
 }
